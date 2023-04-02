@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.mqttv5.common.MqttException;
 
 import java.io.IOException;
 
@@ -16,10 +16,20 @@ public class HelloApplication extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
-        ExampleMQTT.MQTTEX();
+        // Create a new thread for SubscribeSample and start it
+        Thread subscribeThread = new Thread(SubscribeSample::SubscribeMQTT);
+        subscribeThread.start();
+
+        // Create a new thread for PublishSample and start it
+        Thread publishThread = new Thread(PublishSample::PublishMQTT);
+        publishThread.start();
+        //ExampleMQTT.MQTTEX();
+        //SubscribeSample.SubscribeMQTT();
+        //PublishSample.PublishMQTT();
     }
 
     public static void main(String[] args) {
         launch();
     }
 }
+
